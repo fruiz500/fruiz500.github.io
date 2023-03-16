@@ -1,0 +1,18 @@
+CACHE MANIFEST 
+# last edited for v3.2.2023
+style.css
+images/icon24.png
+images/eye-24.png
+images/hide-24.png
+images/key-white.png
+images/folder-wite.png
+lib/license.js
+lib/dictionary_en.js
+lib/main.js
+lib-opensrc/nacl.js
+lib-opensrc/nacl-util.js
+lib-opensrc/scrypt-async.js
+index.html
+technical.html
+admin.html
+admin.php

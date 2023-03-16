@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta charset="UTF-8">
+<title>GroupEncrypt Administration</title>
+<meta name="author" content="F. Ruiz">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="images/icon24.png">
+<link rel="shortcut icon" type="image/x-icon" href="images/icon24.png">
+</head>
+<body>
+<h1>GroupEncrypt Administration</h1>
+<p>This page simply allows an authorized Administrator to edit the GroupKeys.js file containing the users' public keys and other settings. <span id="technical"> Click here for technical details.</span></p>
+<p>Usage: Fill the password field and edit the content box, then click Submit. If the password is validated, the file will be updated on the server.</p>
+<p>Click the other button to download a local copy.</p>
+<form method="post" action="admin.php">
+<p>Write your password:</p>
+<input type="password" name="password">
+<p>Edit the file content, then click Submit</p>
+<textarea id="settings"  name="code" rows="20" cols="70"></textarea>
+<br>
+<input type="submit">&emsp;&emsp;&emsp;
+<button id="downloadBtn">Download to disk</button>
+</form>
+
+<script>
+  technical.addEventListener('click', function(){window.open('technical.html')});
+  downloadBtn.addEventListener('click', function(ev){ev.preventDefault(); download(settings.value, 'GroupKeys.js', "text/plain");});
+
+//fetch file content and place it in text area. Adapted from https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data
+
+// Call `fetch()`, passing in the URL.
+fetch('GroupKeys.js')
+  // fetch() returns a promise. When we have received a response from the server,
+  // the promise's `then()` handler is called with the response.
+  .then((response) => {
+    // Our handler throws an error if the request did not succeed.
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+    // Otherwise (if the response succeeded), our handler fetches the response
+    // as text by calling response.text(), and immediately returns the promise
+    // returned by `response.text()`.
+    return response.text();
+  })
+  // When response.text() has succeeded, the `then()` handler is called with
+  // the text, and we copy it into the `settings` box.
+  .then((text) => settings.textContent = text)
+  // Catch any errors that might happen, and display a message
+  // in the `poemDisplay` box.
+  .catch((error) => settings.textContent = `Could not fetch data: ${error}`);
+
+  //to download data to a file, from StackOverflow
+function download(data, name, type) {
+    var a = document.createElement("a");
+    var file = new Blob([data], {"type": type}),
+        url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function() {
+       document.body.removeChild(a);
+       window.URL.revokeObjectURL(url);
+    }, 0)
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>GroupEncrypt</title>
+<meta charset="UTF-8" appcache="groupencrypt.appcache">
+<meta name="author" content="F. Ruiz">
+<meta name="robots" content="index">
+<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="images/icon24.png">
+<link rel="shortcut icon" type="image/x-icon" href="images/icon24.png">
+<link href="style.css" rel="stylesheet">
+
+
+<!--License notice and SSL force-->
+<script src="lib/license.js"></script>
+    
+<!--this only loads two regular expressions: blackListExp and wordListExp, plus their lengths-->
+<script src="lib/dictionary_en.js"></script>
+
+<!--Tweet NaCl crypto library by Dmitry Chestnykh, v1.0.3. https://github.com/dchest/tweetnacl-js-->
+<script src="lib-opensrc/nacl-fast.js"></script>
+
+<!--scrypt-async-js KDF by Dmitry Chestnykh, v2.0.1. https://github.com/dchest/scrypt-async-js-->
+<script src="lib-opensrc/scrypt-async.js"></script>
+
+<!--this used to be in TweetNaCl, but they dropped it-->
+<script src="lib-opensrc/nacl-util.js"></script>
+
+<!--group keys added through this file, which contains object GroupKeys-->
+<script src="GroupKeys.js"></script>
+
+<!--main code lives here-->
+<script src="lib/main.js"></script>
+</head>
+
+<body>
+<h1 class="center">GroupEncrypt</h1>
+<p class="center">&#169; 2023 F. Ruiz</p>
+<p>This app encrypts/decrypts files for a group of users named <span id="groupNameBox"></span>.</p>
+<p id="step1">1. Enter your secret Password in the box and press the Accept button. As you type your Password, a message will tell you its strength, plus a mnemonic Hashili word below it. For best strength, mix lowercase, capitals, numbers, and special characters; misspell words. <strong>If your Password is less than Medium, things will be slow</strong>. All processing is local; nothing is sent out. You will have to re-enter your Password after 5 minutes of inactivity.</p>
+<div id="pwdArea">
+<div id="pwdMsg" class="message">Password strength will be displayed here</div>
+<input type="password" id="pwdBox" class="cssbox" placeholder="Write your Password here"></input><img id='showPwdMode' class="field-icon" src="images/eye-24.png" title="click this to see/hide Password">
+&nbsp;&nbsp;
+<button id="acceptBtn" class="cssbutton">Accept</button>
+</div>
+<div id="selectArea" class="hide">
+	<br>
+	<div id="userListArea">Selected users:&nbsp;<span id="userList"></span></div>
+	<br>
+<table>
+<tr>
+	<tc>
+	<select class="cssbox" id='groupList' size='7' multiple title="hold Ctrl or cmd to select several users or groups"></select>
+	</tc>
+	<tc id="listText">
+		<p>&emsp;&emsp;No selection means all users</p>
+		<p>&emsp;&emsp;&emsp;<button id="makeKeyBtn" title="Make or update Folder Keys. For Administrator use">New Folder Key</button></p>
+		<p>&emsp;&emsp;&emsp;<button id="adminBtn" title="Edit the user database">Edit Users</button></p>
+		<p>&emsp;&emsp;&emsp;<input type="checkbox" id="singleMode">&nbsp;encrypt File by File</p>
+	</tc>
+</tr>
+</table>
+</div>
+<div id="fileArea" class="hide">
+	<p>&nbsp;</p>
+	<p id="step2">2. Now load an encrypted Folder Key by dragging it into the area below, or click it to navigate to the file.</p>
+	<p id="step3" class="hide">3. Finally, load the files to be processed by the same method. The files will be encrypted or decrypted automatically and saved to Downloads. You can process several files at a time.</p>
+<div id="fileMsg" class="message">Enter your Password first</div>
+<input type="file" id="fileIn" class="hide" multiple></input>
+<label for="fileIn" id="fileLbl" class="dropTarget" title="drop a Folder Key here">
+	<img id="fileImg" class="smallImg" src="images/key-white.png">
+</label>
+<br><br>
+<span id="admin">Click here to toggle Administrator extras.</span>
+</div>
+</body>
+</html>
